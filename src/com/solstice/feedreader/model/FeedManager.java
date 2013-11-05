@@ -1,26 +1,51 @@
 package com.solstice.feedreader.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-public class FeedManager implements Serializable{
-	
+public class FeedManager implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
-	private Set<Category> categories = new HashSet<Category>();
-	private Set<Author> authors = new HashSet<Author>();
-	private Set<Article> articles = new HashSet<Article>();
-	
+
+	private Map<String, Category> categories = new HashMap<String, Category>();
+	private Map<String, Author> authors = new HashMap<String, Author>();
+	private Map<String, Article> articles = new HashMap<String, Article>();
+
 	public void addCategory(Category category) {
-		categories.add(category);
+		if (!categories.containsKey(category.getName())) {
+			categories.put(category.getName(), category);
+		}
 	}
-	
-	public void addAuthor(Author author) {
-		authors.add(author);
+
+	private void addAuthor(Author author) {
+		if (!authors.containsKey(author.getName())) {
+			authors.put(author.getName(), author);
+		}
 	}
-	
+
 	public void addArticle(Article article) {
-		articles.add(article);
+		articles.put(article.getTitle(), article);
+
+		for (Category category : article.getCategories()) {
+			addCategory(category);
+			categories.get(category.getName()).addArticle(article);
+		}
+
+		addAuthor(article.getAuthor());
+		authors.get(article.getAuthor().getName()).addArticle(article);
 	}
+	
+	public int categoryNumber() {
+		return categories.size();
+	}
+	
+	public int authorNumber() {
+		return authors.size();
+	}
+	
+	public int articleNumber() {
+		return articles.size();
+	}
+	
 }

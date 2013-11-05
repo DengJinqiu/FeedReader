@@ -58,22 +58,55 @@ public class SolsticeXmlParser {
 			// Starts by looking for the entry tag
 			if (name.equals("category")) {
 				readCategory(parser);
+				if (feedManager.categoryNumber() % 10 == 0) {
+					int a = 1;
+					int b = a;
+				}
 			} else if (name.equals("entry")) {
 				readEntry(parser);
+				skip(parser);
 			} else {
 				skip(parser);
 			}
 		}
 	}
 
-	private void readEntry(XmlPullParser parser) {
-
+	private void readCategory(XmlPullParser parser)
+			throws XmlPullParserException, IOException {
+		parser.require(XmlPullParser.START_TAG, ns, "category");
+		if (parser.getAttributeCount() != 1) {
+			throw new XmlPullParserException(
+					"XML category attribute number does not equal to one");
+		} else {
+			feedManager.addCategory(new Category(parser.getAttributeValue(0)));
+			skip(parser);
+		}
 	}
 
-	private void readCategory(XmlPullParser parser) {
-
+	private void readEntry(XmlPullParser parser) throws XmlPullParserException,
+			IOException {
+		parser.require(XmlPullParser.START_TAG, ns, "entry");
+		// String title = null;
+		// String summary = null;
+		// String link = null;
+		// while (parser.next() != XmlPullParser.END_TAG) {
+		// if (parser.getEventType() != XmlPullParser.START_TAG) {
+		// continue;
+		// }
+		// String name = parser.getName();
+		// if (name.equals("title")) {
+		// title = readTitle(parser);
+		// } else if (name.equals("summary")) {
+		// summary = readSummary(parser);
+		// } else if (name.equals("link")) {
+		// link = readLink(parser);
+		// } else {
+		// skip(parser);
+		// }
+		// }
+		// return new Entry(title, summary, link);
 	}
-	
+
 	private void readAuthor(XmlPullParser parser) {
 
 	}

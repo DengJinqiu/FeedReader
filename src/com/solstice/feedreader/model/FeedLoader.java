@@ -10,7 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public class FeedLoader {
 
 	private static final String URL = "http://blog.solstice-mobile.com/feeds/posts/default";
-
+	
 	public FeedManager loadFeed() throws IOException, XmlPullParserException {
 		InputStream stream = null;
 		SolsticeXmlParser solsticeXmlParser = new SolsticeXmlParser();
@@ -37,10 +37,7 @@ public class FeedLoader {
 		// Starts the query
 		conn.connect();
 		InputStream stream = conn.getInputStream();
-//		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-//		String inputLine = in.readLine();
-//
-//		in.close();
+
 		return stream;
 	}
 

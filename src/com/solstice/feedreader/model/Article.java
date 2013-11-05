@@ -9,13 +9,37 @@ public class Article {
 	private String content;
 	
 	private Set<Category> categories = new HashSet<Category>();
-	private Set<Author> authors = new HashSet<Author>();
+	private Author authors;
 	
 	public void addCategory(Category category) {
 		categories.add(category);
 	}
 	
-	public void addAuthor(Author author) {
-		authors.add(author);
+	public Iterable<Category> getCategories() {
+		return categories;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Author getAuthor() {
+		return authors;
+	}
+
+	public void setAuthors(Author authors) {
+		this.authors = authors;
 	}
 }
