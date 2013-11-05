@@ -7,6 +7,8 @@ import java.util.Map;
 public class FeedManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String FEED_MANAGER = "FEED_MANAGER";
 
 	private Map<String, Category> categories = new HashMap<String, Category>();
 	private Map<String, Author> authors = new HashMap<String, Author>();

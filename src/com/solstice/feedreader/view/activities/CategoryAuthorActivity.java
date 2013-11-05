@@ -3,6 +3,7 @@ package com.solstice.feedreader.view.activities;
 import java.util.Locale;
 
 import com.solstice.feedreader.R;
+import com.solstice.feedreader.model.FeedManager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 public class CategoryAuthorActivity extends FragmentActivity {
 
 	/** Provide fragments for each of the sections. */
-	SectionsPagerAdapter sectionsPagerAdapter;
+	private SectionsPagerAdapter sectionsPagerAdapter;
 
 	/** Host the section contents. */
-	ViewPager viewPager;
+	private ViewPager viewPager;
+	
+	private FeedManager feedManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,11 @@ public class CategoryAuthorActivity extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(sectionsPagerAdapter);
+
+		Bundle bundle = this.getIntent().getExtras();
+		if (bundle != null) {
+			feedManager = (FeedManager) bundle.getSerializable(FeedManager.FEED_MANAGER);
+		}
 	}
 
 	/**

@@ -1,9 +1,10 @@
 package com.solstice.feedreader.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Article {
+public class Article  implements Serializable{
 	
 	private String title;
 	private String content;
