@@ -8,15 +8,15 @@ public class Article {
 	private String title;
 	private String content;
 	
-	private Set<Category> categories = new HashSet<Category>();
-	private Author authors;
+	private Set<String> categoryNames = new HashSet<String>();
+	private String authorName;
 	
-	public void addCategory(Category category) {
-		categories.add(category);
+	public void addCategory(String categoryName) {
+		categoryNames.add(categoryName);
 	}
 	
-	public Iterable<Category> getCategories() {
-		return categories;
+	public Iterable<String> getCategoryNames() {
+		return categoryNames;
 	}
 
 	public String getTitle() {
@@ -35,11 +35,11 @@ public class Article {
 		this.content = content;
 	}
 
-	public Author getAuthor() {
-		return authors;
+	public String getAuthorName() {
+		return authorName;
 	}
 
-	public void setAuthors(Author authors) {
-		this.authors = authors;
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 }

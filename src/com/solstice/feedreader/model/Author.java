@@ -8,6 +8,10 @@ public class Author {
 	
 	private Set<Article> articles = new HashSet<Article>();
 	
+	public Author(String name) {
+		this.name = name;
+	}
+	
 	public void addArticle(Article article) {
 		articles.add(article);
 	}

@@ -12,40 +12,40 @@ public class FeedManager implements Serializable {
 	private Map<String, Author> authors = new HashMap<String, Author>();
 	private Map<String, Article> articles = new HashMap<String, Article>();
 
-	public void addCategory(Category category) {
-		if (!categories.containsKey(category.getName())) {
-			categories.put(category.getName(), category);
+	public void addCategory(String categoryName) {
+		if (!categories.containsKey(categoryName)) {
+			categories.put(categoryName, new Category(categoryName));
 		}
 	}
 
-	private void addAuthor(Author author) {
-		if (!authors.containsKey(author.getName())) {
-			authors.put(author.getName(), author);
+	private void addAuthor(String authorName) {
+		if (!authors.containsKey(authorName)) {
+			authors.put(authorName, new Author(authorName));
 		}
 	}
 
 	public void addArticle(Article article) {
 		articles.put(article.getTitle(), article);
 
-		for (Category category : article.getCategories()) {
-			addCategory(category);
-			categories.get(category.getName()).addArticle(article);
+		for (String categoryName : article.getCategoryNames()) {
+			addCategory(categoryName);
+			categories.get(categoryName).addArticle(article);
 		}
 
-		addAuthor(article.getAuthor());
-		authors.get(article.getAuthor().getName()).addArticle(article);
+		addAuthor(article.getAuthorName());
+		authors.get(article.getAuthorName()).addArticle(article);
 	}
-	
+
 	public int categoryNumber() {
 		return categories.size();
 	}
-	
+
 	public int authorNumber() {
 		return authors.size();
 	}
-	
+
 	public int articleNumber() {
 		return articles.size();
 	}
-	
+
 }

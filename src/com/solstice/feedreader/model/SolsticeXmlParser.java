@@ -58,13 +58,8 @@ public class SolsticeXmlParser {
 			// Starts by looking for the entry tag
 			if (name.equals("category")) {
 				readCategory(parser);
-				if (feedManager.categoryNumber() % 10 == 0) {
-					int a = 1;
-					int b = a;
-				}
 			} else if (name.equals("entry")) {
 				readEntry(parser);
-				skip(parser);
 			} else {
 				skip(parser);
 			}
@@ -78,7 +73,7 @@ public class SolsticeXmlParser {
 			throw new XmlPullParserException(
 					"XML category attribute number does not equal to one");
 		} else {
-			feedManager.addCategory(new Category(parser.getAttributeValue(0)));
+			feedManager.addCategory(parser.getAttributeValue(0));
 			skip(parser);
 		}
 	}
@@ -86,29 +81,65 @@ public class SolsticeXmlParser {
 	private void readEntry(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		parser.require(XmlPullParser.START_TAG, ns, "entry");
-		// String title = null;
-		// String summary = null;
-		// String link = null;
-		// while (parser.next() != XmlPullParser.END_TAG) {
-		// if (parser.getEventType() != XmlPullParser.START_TAG) {
-		// continue;
-		// }
-		// String name = parser.getName();
-		// if (name.equals("title")) {
-		// title = readTitle(parser);
-		// } else if (name.equals("summary")) {
-		// summary = readSummary(parser);
-		// } else if (name.equals("link")) {
-		// link = readLink(parser);
-		// } else {
-		// skip(parser);
-		// }
-		// }
-		// return new Entry(title, summary, link);
+
+		Article article = new Article();
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			String name = parser.getName();
+			if (name.equals("category") && parser.getAttributeCount() == 2
+					&& parser.getAttributeName(1).equals("term")) {
+				article.addCategory(parser.getAttributeValue(1));
+				parser.next();
+			} else if (name.equals("title")) {
+				parser.require(XmlPullParser.START_TAG, ns, "title");
+				String title = readText(parser);
+				parser.require(XmlPullParser.END_TAG, ns, "title");
+				article.setTitle(title);
+			} else if (name.equals("content")) {
+				parser.require(XmlPullParser.START_TAG, ns, "content");
+				String content = readText(parser);
+				parser.require(XmlPullParser.END_TAG, ns, "content");
+				article.setContent(content);
+			} else if (name.equals("author")) {
+				article.setAuthorName(readAuthor(parser));
+			} else {
+				skip(parser);
+			}
+		}
+		feedManager.addArticle(article);
 	}
 
-	private void readAuthor(XmlPullParser parser) {
+	private String readAuthor(XmlPullParser parser)
+			throws XmlPullParserException, IOException {
+		String authorName = null;
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			String name = parser.getName();
+			// Starts by looking for the entry tag
+			if (name.equals("name")) {
+				parser.require(XmlPullParser.START_TAG, ns, "name");
+				authorName = readText(parser);
+				parser.require(XmlPullParser.END_TAG, ns, "name");
+			} else {
+				skip(parser);
+			}
+		}
+		return authorName;
+	}
 
+	// For the tags title and summary, extracts their text values.
+	private String readText(XmlPullParser parser) throws IOException,
+			XmlPullParserException {
+		String result = "";
+		if (parser.next() == XmlPullParser.TEXT) {
+			result = parser.getText();
+			parser.nextTag();
+		}
+		return result;
 	}
 
 	// Skips tags the parser isn't interested in. Uses depth to handle nested
