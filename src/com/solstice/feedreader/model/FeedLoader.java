@@ -1,9 +1,7 @@
 package com.solstice.feedreader.model;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -15,11 +13,11 @@ public class FeedLoader {
 
 	public FeedManager loadFeed() throws IOException, XmlPullParserException {
 		InputStream stream = null;
-		SolsticeXmlParser xmlParser = new SolsticeXmlParser();
+		SolsticeXmlParser solsticeXmlParser = new SolsticeXmlParser();
 
 		try {
 			stream = downloadUrl(URL);
-			return xmlParser.parse(stream);
+			return solsticeXmlParser.parse(stream);
 		} finally {
 			if (stream != null) {
 				stream.close();
@@ -39,10 +37,10 @@ public class FeedLoader {
 		// Starts the query
 		conn.connect();
 		InputStream stream = conn.getInputStream();
-		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-		String inputLine = in.readLine();
-
-		in.close();
+//		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
+//		String inputLine = in.readLine();
+//
+//		in.close();
 		return stream;
 	}
 
