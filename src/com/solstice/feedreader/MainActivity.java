@@ -1,13 +1,6 @@
 package com.solstice.feedreader;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -33,21 +26,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
-
+	
 	public static final String WIFI = "Wi-Fi";
-	public static final String ANY = "Any";
+	public static final String CELLULAR = "Cellular";
 	private static final String URL = "http://blog.solstice-mobile.com/feeds/posts/default";
 
-	// Whether there is a Wi-Fi connection.
+	/** Whether there is a Wi-Fi connection. */
 	private static boolean wifiConnected = false;
-	// Whether there is a mobile connection.
+	/** Whether there is a mobile connection. */
 	private static boolean mobileConnected = false;
-	// Whether the display should be refreshed.
+	/** Whether the display should be refreshed. */
 	public static boolean refreshDisplay = true;
 
 	// The user's current network preference setting.
@@ -264,18 +256,18 @@ public class MainActivity extends FragmentActivity {
 
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
-    private InputStream downloadUrl(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(10000 /* milliseconds */);
-        conn.setConnectTimeout(15000 /* milliseconds */);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        // Starts the query
-        conn.connect();
-        InputStream stream = conn.getInputStream();
-        return stream;
-    }
+//    private InputStream downloadUrl(String urlString) throws IOException {
+//        URL url = new URL(urlString);
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setReadTimeout(10000 /* milliseconds */);
+//        conn.setConnectTimeout(15000 /* milliseconds */);
+//        conn.setRequestMethod("GET");
+//        conn.setDoInput(true);
+//        // Starts the query
+//        conn.connect();
+//        InputStream stream = conn.getInputStream();
+//        return stream;
+//    }
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
