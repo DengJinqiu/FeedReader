@@ -1,4 +1,5 @@
 FeedReader
 ======
 
--- Include private java docs
+- Include private java docs
+- Refresh
