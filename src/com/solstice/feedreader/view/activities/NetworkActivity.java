@@ -1,5 +1,9 @@
 package com.solstice.feedreader.view.activities;
 
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +21,7 @@ import com.solstice.feedreader.model.FeedLoaderImpl;
 import com.solstice.feedreader.model.FeedManager;
 
 public class NetworkActivity extends Activity {
-	
+
 	private FeedLoader feedLoader = new FeedLoaderImpl();
 
 	/** The BroadcastReceiver that tracks network connectivity changes. */
@@ -92,8 +96,12 @@ public class NetworkActivity extends Activity {
 		protected FeedManager doInBackground(String... urls) {
 			try {
 				return feedLoader.loadFeed(urls[0]);
-			} finally {
-				
+			} catch (XmlPullParserException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 
