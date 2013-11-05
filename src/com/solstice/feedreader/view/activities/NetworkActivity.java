@@ -1,4 +1,4 @@
-package com.solstice.feedreader;
+package com.solstice.feedreader.view.activities;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -7,13 +7,23 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.solstice.feedreader.R;
+import com.solstice.feedreader.model.FeedLoader;
+import com.solstice.feedreader.model.FeedLoaderImpl;
+import com.solstice.feedreader.model.FeedManager;
+
 public class NetworkActivity extends Activity {
+	
+	private FeedLoader feedLoader = new FeedLoaderImpl();
 
 	/** The BroadcastReceiver that tracks network connectivity changes. */
 	private NetworkReceiver receiver = new NetworkReceiver();
+
+	private static final String URL = "http://blog.solstice-mobile.com/feeds/posts/default";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +42,6 @@ public class NetworkActivity extends Activity {
 		if (receiver != null) {
 			this.unregisterReceiver(receiver);
 		}
-	}
-
-	private void launchCategoryAuthorActivity() {
-		Intent intent = new Intent();
-		intent.setClass(NetworkActivity.this, CategoryAuthorActivity.class);
-		startActivity(intent);
-		finish();
 	}
 
 	/**
@@ -73,12 +76,34 @@ public class NetworkActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (isConnected()) {
-				launchCategoryAuthorActivity();
+				new DownloadXmlTask().execute(URL);
 			} else {
 				showNoConnectionPage();
 			}
 		}
 
+	}
+
+	// Implementation of AsyncTask used to download XML feed from
+	// stackoverflow.com.
+	private class DownloadXmlTask extends AsyncTask<String, Void, FeedManager> {
+
+		@Override
+		protected FeedManager doInBackground(String... urls) {
+			try {
+				return feedLoader.loadFeed(urls[0]);
+			} finally {
+				
+			}
+		}
+
+		@Override
+		protected void onPostExecute(FeedManager feedManager) {
+			Intent intent = new Intent();
+			intent.setClass(NetworkActivity.this, CategoryAuthorActivity.class);
+			startActivity(intent);
+			finish();
+		}
 	}
 
 }

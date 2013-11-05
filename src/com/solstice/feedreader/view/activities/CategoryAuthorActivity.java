@@ -1,6 +1,8 @@
-package com.solstice.feedreader;
+package com.solstice.feedreader.view.activities;
 
 import java.util.Locale;
+
+import com.solstice.feedreader.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
