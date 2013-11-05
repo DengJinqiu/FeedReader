@@ -17,17 +17,14 @@ import android.widget.TextView;
 
 import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.FeedLoader;
-import com.solstice.feedreader.model.FeedLoaderImpl;
 import com.solstice.feedreader.model.FeedManager;
 
 public class NetworkActivity extends Activity {
 
-	private FeedLoader feedLoader = new FeedLoaderImpl();
+	private FeedLoader feedLoader = new FeedLoader();
 
 	/** The BroadcastReceiver that tracks network connectivity changes. */
 	private NetworkReceiver receiver = new NetworkReceiver();
-
-	private static final String URL = "http://blog.solstice-mobile.com/feeds/posts/default";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +77,7 @@ public class NetworkActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (isConnected()) {
-				new DownloadXmlTask().execute(URL);
+				new DownloadXmlTask().execute();
 			} else {
 				showNoConnectionPage();
 			}
@@ -90,12 +87,12 @@ public class NetworkActivity extends Activity {
 
 	// Implementation of AsyncTask used to download XML feed from
 	// stackoverflow.com.
-	private class DownloadXmlTask extends AsyncTask<String, Void, FeedManager> {
+	private class DownloadXmlTask extends AsyncTask<Void, Void, FeedManager> {
 
 		@Override
-		protected FeedManager doInBackground(String... urls) {
+		protected FeedManager doInBackground(Void... params) {
 			try {
-				return feedLoader.loadFeed(urls[0]);
+				return feedLoader.loadFeed();
 			} catch (XmlPullParserException e) {
 				e.printStackTrace();
 				return null;
@@ -112,6 +109,7 @@ public class NetworkActivity extends Activity {
 			startActivity(intent);
 			finish();
 		}
+
 	}
 
 }

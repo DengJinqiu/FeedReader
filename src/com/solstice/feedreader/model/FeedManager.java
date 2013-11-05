@@ -2,6 +2,6 @@ package com.solstice.feedreader.model;
 
 import java.io.Serializable;
 
-public interface FeedManager extends Serializable{
+public class FeedManager implements Serializable{
 
 }
