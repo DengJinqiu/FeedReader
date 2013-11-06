@@ -22,7 +22,7 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.ArticleCollection;
 import com.solstice.feedreader.model.FeedManager;
 
-public class TotalCategoryAuthorActivity extends FragmentActivity {
+public class CategoryAuthorActivity extends FragmentActivity {
 
 	/** Provide fragments for each of the sections. */
 	private SectionsPagerAdapter sectionsPagerAdapter;
@@ -36,6 +36,12 @@ public class TotalCategoryAuthorActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.swipe_scroll_page);
+		
+		Bundle args = this.getIntent().getExtras();
+		if (args != null) {
+			feedManager = (FeedManager) args
+					.getSerializable(FeedManager.FEED_MANAGER);
+		}
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -46,11 +52,7 @@ public class TotalCategoryAuthorActivity extends FragmentActivity {
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(sectionsPagerAdapter);
 
-		Bundle args = this.getIntent().getExtras();
-		if (args != null) {
-			feedManager = (FeedManager) args
-					.getSerializable(FeedManager.FEED_MANAGER);
-		}
+
 	}
 
 	/**
@@ -62,7 +64,12 @@ public class TotalCategoryAuthorActivity extends FragmentActivity {
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
-
+		
+		@Override
+		public void setPrimaryItem (ViewGroup container, int position, Object object) {
+			
+		}
+		
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
@@ -120,7 +127,7 @@ public class TotalCategoryAuthorActivity extends FragmentActivity {
 			}
 
 			ScrollView rootView = (ScrollView) inflater.inflate(
-					R.layout.vertical_scroll_fragment, container, false);
+					R.layout.collection_fragment, container, false);
 
 			LinearLayout rootViewContent = (LinearLayout) rootView
 					.findViewById(R.id.fragment_content);
@@ -135,14 +142,13 @@ public class TotalCategoryAuthorActivity extends FragmentActivity {
 						Intent intent = new Intent();
 						Bundle args = new Bundle();
 						args.putSerializable(ArticleCollection.COLLECTION,
-								articleCollections
-										.get(((ArticleCollectionButton) view)
-												.getArticleCollection()));
+								((ArticleCollectionButton) view)
+												.getArticleCollection());
 						intent.putExtras(args);
 						intent.setClass(
-								(TotalCategoryAuthorActivity) VerticalScrollFragment.this
+								(CategoryAuthorActivity) VerticalScrollFragment.this
 										.getActivity(),
-								SingleCategoryOrAuthorActivity.class);
+								ArticleActivity.class);
 						startActivity(intent);
 					}
 				});

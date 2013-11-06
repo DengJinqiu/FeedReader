@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 			Bundle args = new Bundle();
 			args.putSerializable(FeedManager.FEED_MANAGER, feedManager);
 			intent.putExtras(args);
-			intent.setClass(MainActivity.this, TotalCategoryAuthorActivity.class);
+			intent.setClass(MainActivity.this, CategoryAuthorActivity.class);
 			startActivity(intent);
 			finish();
 		}

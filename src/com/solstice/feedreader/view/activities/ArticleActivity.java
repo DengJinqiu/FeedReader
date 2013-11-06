@@ -1,5 +1,6 @@
 package com.solstice.feedreader.view.activities;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import android.os.Bundle;
@@ -8,51 +9,47 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.solstice.feedreader.R;
+import com.solstice.feedreader.model.Article;
+import com.solstice.feedreader.model.ArticleCollection;
 
-public class SingleCategoryOrAuthorActivity extends FragmentActivity {
+public class ArticleActivity extends FragmentActivity {
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	/** Provide fragments for each of the sections. */
+	private SectionsPagerAdapter sectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	ViewPager mViewPager;
+	/** Host the section contents. */
+	private ViewPager viewPager;
+
+	private ArticleCollection articleCollection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.swipe_scroll_page);
 
+		Bundle args = this.getIntent().getExtras();
+		if (args != null) {
+			articleCollection = (ArticleCollection) args
+					.getSerializable(ArticleCollection.COLLECTION);
+		}
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
+		sectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager.setAdapter(sectionsPagerAdapter);
 
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 
 	/**
@@ -70,31 +67,26 @@ public class SingleCategoryOrAuthorActivity extends FragmentActivity {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new VerticalScrollFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putSerializable(Article.ARTICLE,
+					(Serializable) articleCollection.getArticle(position));
 			fragment.setArguments(args);
+			Log.d("getItem", Integer.toString(position));
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			return articleCollection.articleNumber();
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return "ddd";
-			case 1:
-				return "ddd";
-			case 2:
-				return "ddd";
-			}
-			return null;
+			Locale local = Locale.getDefault();
+			Log.d("getPageTitle", Integer.toString(position));
+			return articleCollection.getArticle(position).getTitle()
+					.toUpperCase(local);
 		}
 	}
 
@@ -102,22 +94,29 @@ public class SingleCategoryOrAuthorActivity extends FragmentActivity {
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
-	public static class DummySectionFragment extends Fragment {
+	public static class VerticalScrollFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment() {
-		}
+		private Article article;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.vertical_scroll_fragment,
-					container, false);
-			
+
+			Bundle args = getArguments();
+			if (args != null) {
+				article = (Article) args.getSerializable(Article.ARTICLE);
+			}
+
+			ScrollView rootView = (ScrollView) inflater.inflate(
+					R.layout.article_fragment, container, false);
+
+			TextView title = (TextView) rootView.findViewById(R.id.title);
+			title.setText(article.getTitle());
 			return rootView;
 		}
 	}

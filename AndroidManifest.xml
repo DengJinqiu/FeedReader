@@ -28,9 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.solstice.feedreader.view.activities.TotalCategoryAuthorActivity" >
+        <activity android:name="com.solstice.feedreader.view.activities.CategoryAuthorActivity" >
         </activity>
-        <activity android:name="com.solstice.feedreader.view.activities.SingleCategoryOrAuthorActivity" >
+        <activity android:name="com.solstice.feedreader.view.activities.ArticleActivity" >
         </activity>
     </application>
 
