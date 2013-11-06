@@ -10,7 +10,7 @@
 
     <!-- Allows applications to open network sockets. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <!-- Allows applications to access information about networks. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.solstice.feedreader.view.activities.NetworkActivity"
+            android:name="com.solstice.feedreader.view.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.solstice.feedreader.view.activities.CategoryAuthorActivity" >
+        <activity android:name="com.solstice.feedreader.view.activities.TotalCategoryAuthorActivity" >
+        </activity>
+        <activity android:name="com.solstice.feedreader.view.activities.SingleCategoryOrAuthorActivity" >
         </activity>
     </application>
 

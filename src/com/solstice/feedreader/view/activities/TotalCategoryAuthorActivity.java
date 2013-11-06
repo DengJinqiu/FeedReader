@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,7 +22,7 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.ArticleCollection;
 import com.solstice.feedreader.model.FeedManager;
 
-public class CategoryAuthorActivity extends FragmentActivity {
+public class TotalCategoryAuthorActivity extends FragmentActivity {
 
 	/** Provide fragments for each of the sections. */
 	private SectionsPagerAdapter sectionsPagerAdapter;
@@ -34,7 +35,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.swipe_scroll_page);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -56,7 +57,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -67,7 +68,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new VerticalScrollFragment();
 			Bundle args = new Bundle();
 			if (position == 0) {
 				args.putSerializable(ArticleCollection.COLLECTIONS,
@@ -103,17 +104,9 @@ public class CategoryAuthorActivity extends FragmentActivity {
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
+	public static class VerticalScrollFragment extends Fragment {
 
 		private Map<String, ArticleCollection> articleCollections;
-
-		public DummySectionFragment() {
-		}
 
 		@SuppressWarnings("unchecked")
 		@Override
@@ -127,18 +120,51 @@ public class CategoryAuthorActivity extends FragmentActivity {
 			}
 
 			ScrollView rootView = (ScrollView) inflater.inflate(
-					R.layout.scroll_fragment, container, false);
+					R.layout.vertical_scroll_fragment, container, false);
 
 			LinearLayout rootViewContent = (LinearLayout) rootView
 					.findViewById(R.id.fragment_content);
 
 			for (String name : articleCollections.keySet()) {
-				Button item = new Button(getActivity(), null, R.id.item);
-				item.setText(name);
+				ArticleCollectionButton item = new ArticleCollectionButton(
+						articleCollections.get(name));
+				item.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						Intent intent = new Intent();
+						Bundle args = new Bundle();
+						args.putSerializable(ArticleCollection.COLLECTION,
+								articleCollections
+										.get(((ArticleCollectionButton) view)
+												.getArticleCollection()));
+						intent.putExtras(args);
+						intent.setClass(
+								(TotalCategoryAuthorActivity) VerticalScrollFragment.this
+										.getActivity(),
+								SingleCategoryOrAuthorActivity.class);
+						startActivity(intent);
+					}
+				});
 				rootViewContent.addView(item);
 			}
 
 			return rootView;
+		}
+
+		private class ArticleCollectionButton extends Button {
+
+			private ArticleCollection articleCollection;
+
+			public ArticleCollectionButton(ArticleCollection articleCollection) {
+				super(VerticalScrollFragment.this.getActivity());
+				this.articleCollection = articleCollection;
+				setText(articleCollection.getName());
+			}
+
+			public ArticleCollection getArticleCollection() {
+				return articleCollection;
+			}
 		}
 	}
 

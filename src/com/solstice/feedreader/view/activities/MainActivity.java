@@ -19,7 +19,7 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.FeedLoader;
 import com.solstice.feedreader.model.FeedManager;
 
-public class NetworkActivity extends Activity {
+public class MainActivity extends Activity {
 
 	private FeedLoader feedLoader = new FeedLoader();
 
@@ -108,7 +108,7 @@ public class NetworkActivity extends Activity {
 			Bundle args = new Bundle();
 			args.putSerializable(FeedManager.FEED_MANAGER, feedManager);
 			intent.putExtras(args);
-			intent.setClass(NetworkActivity.this, CategoryAuthorActivity.class);
+			intent.setClass(MainActivity.this, TotalCategoryAuthorActivity.class);
 			startActivity(intent);
 			finish();
 		}
