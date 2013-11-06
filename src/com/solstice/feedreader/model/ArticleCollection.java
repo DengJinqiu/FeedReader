@@ -4,15 +4,19 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Category implements Serializable {
+public class ArticleCollection implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String COLLECTIONS = "collections";
+	
+	public static final String COLLECTION = "collection";
 
 	private String name;
 
 	private Set<Article> articles = new HashSet<Article>();
 
-	public Category(String name) {
+	public ArticleCollection(String name) {
 		this.name = name;
 	}
 
@@ -27,5 +31,5 @@ public class Category implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 }

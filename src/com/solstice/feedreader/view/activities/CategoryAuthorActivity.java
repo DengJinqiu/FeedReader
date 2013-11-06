@@ -1,20 +1,27 @@
 package com.solstice.feedreader.view.activities;
 
+import java.io.Serializable;
 import java.util.Locale;
+import java.util.Map;
 
-import com.solstice.feedreader.R;
-import com.solstice.feedreader.model.FeedManager;
-
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.solstice.feedreader.R;
+import com.solstice.feedreader.model.ArticleCollection;
+import com.solstice.feedreader.model.FeedManager;
 
 public class CategoryAuthorActivity extends FragmentActivity {
 
@@ -23,7 +30,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 
 	/** Host the section contents. */
 	private ViewPager viewPager;
-	
+
 	private FeedManager feedManager;
 
 	@Override
@@ -40,9 +47,10 @@ public class CategoryAuthorActivity extends FragmentActivity {
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(sectionsPagerAdapter);
 
-		Bundle bundle = this.getIntent().getExtras();
-		if (bundle != null) {
-			feedManager = (FeedManager) bundle.getSerializable(FeedManager.FEED_MANAGER);
+		Bundle args = this.getIntent().getExtras();
+		if (args != null) {
+			feedManager = (FeedManager) args
+					.getSerializable(FeedManager.FEED_MANAGER);
 		}
 	}
 
@@ -63,27 +71,31 @@ public class CategoryAuthorActivity extends FragmentActivity {
 			// below) with the page number as its lone argument.
 			Fragment fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
+			if (position == 0) {
+				args.putSerializable(ArticleCollection.COLLECTIONS,
+						(Serializable) feedManager.getCategories());
+				fragment.setArguments(args);
+			} else if (position == 1) {
+				args.putSerializable(ArticleCollection.COLLECTIONS,
+						(Serializable) feedManager.getAuthors());
+				fragment.setArguments(args);
+			}
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
+			Locale local = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				return getString(R.string.category).toUpperCase(local);
 			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
+				return getString(R.string.author).toUpperCase(local);
 			}
 			return null;
 		}
@@ -100,18 +112,35 @@ public class CategoryAuthorActivity extends FragmentActivity {
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
+		private Map<String, ArticleCollection> articleCollections;
+
 		public DummySectionFragment() {
 		}
-
+		
+		@SuppressWarnings("unchecked")
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
+
+			Bundle args = getArguments();
+			if (args != null) {
+				articleCollections = (Map<String, ArticleCollection>) args
+						.getSerializable(ArticleCollection.COLLECTIONS);
+			}
+			getActivity();
+			ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main_dummy,
 					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+
+			Button textView2 = new Button(getActivity());
+			textView2.setText("BBB");
+			rootView.addView(textView2, 100, 100);
+			
+			TextView textView = new TextView(getActivity());
+			textView.setText("DDD");
+			rootView.addView(textView, 200, 200);
+			
+
+			
 			return rootView;
 		}
 	}

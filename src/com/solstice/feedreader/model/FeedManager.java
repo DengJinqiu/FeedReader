@@ -8,21 +8,21 @@ public class FeedManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String FEED_MANAGER = "FEED_MANAGER";
+	public static final String FEED_MANAGER = "feed_manager";
 
-	private Map<String, Category> categories = new HashMap<String, Category>();
-	private Map<String, Author> authors = new HashMap<String, Author>();
+	private Map<String, ArticleCollection> categories = new HashMap<String, ArticleCollection>();
+	private Map<String, ArticleCollection> authors = new HashMap<String, ArticleCollection>();
 	private Map<String, Article> articles = new HashMap<String, Article>();
 
 	public void addCategory(String categoryName) {
 		if (!categories.containsKey(categoryName)) {
-			categories.put(categoryName, new Category(categoryName));
+			categories.put(categoryName, new ArticleCollection(categoryName));
 		}
 	}
 
 	private void addAuthor(String authorName) {
 		if (!authors.containsKey(authorName)) {
-			authors.put(authorName, new Author(authorName));
+			authors.put(authorName, new ArticleCollection(authorName));
 		}
 	}
 
@@ -48,6 +48,14 @@ public class FeedManager implements Serializable {
 
 	public int articleNumber() {
 		return articles.size();
+	}
+	
+	public Map<String, ArticleCollection> getCategories() {
+		return categories;
+	}
+	
+	public Map<String, ArticleCollection> getAuthors() {
+		return authors;
 	}
 
 }

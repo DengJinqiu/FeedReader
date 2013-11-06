@@ -4,18 +4,20 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Article  implements Serializable{
+public class Article implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private String title;
 	private String content;
-	
+
 	private Set<String> categoryNames = new HashSet<String>();
 	private String authorName;
-	
+
 	public void addCategory(String categoryName) {
 		categoryNames.add(categoryName);
 	}
-	
+
 	public Iterable<String> getCategoryNames() {
 		return categoryNames;
 	}

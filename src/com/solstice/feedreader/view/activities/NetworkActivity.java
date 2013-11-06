@@ -105,9 +105,9 @@ public class NetworkActivity extends Activity {
 		@Override
 		protected void onPostExecute(FeedManager feedManager) {
 			Intent intent = new Intent();
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(FeedManager.FEED_MANAGER, feedManager);
-			intent.putExtras(bundle);
+			Bundle args = new Bundle();
+			args.putSerializable(FeedManager.FEED_MANAGER, feedManager);
+			intent.putExtras(args);
 			intent.setClass(NetworkActivity.this, CategoryAuthorActivity.class);
 			startActivity(intent);
 			finish();
