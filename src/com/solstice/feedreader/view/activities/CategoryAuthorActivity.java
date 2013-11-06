@@ -4,20 +4,18 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ScrollView;
 
 import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.ArticleCollection;
@@ -116,7 +114,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 
 		public DummySectionFragment() {
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,20 +125,19 @@ public class CategoryAuthorActivity extends FragmentActivity {
 				articleCollections = (Map<String, ArticleCollection>) args
 						.getSerializable(ArticleCollection.COLLECTIONS);
 			}
-			getActivity();
-			ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main_dummy,
-					container, false);
 
-			Button textView2 = new Button(getActivity());
-			textView2.setText("BBB");
-			rootView.addView(textView2, 100, 100);
+			ScrollView rootView = (ScrollView) inflater.inflate(
+					R.layout.scroll_fragment, container, false);
 			
-			TextView textView = new TextView(getActivity());
-			textView.setText("DDD");
-			rootView.addView(textView, 200, 200);
-			
+			LinearLayout rootViewContent = (LinearLayout) rootView.findViewById(R.id.fragment_content);
 
-			
+			for (String name : articleCollections.keySet()) {
+				Button item = new Button(getActivity(), null, R.id.item);
+				item.setText(name);
+				rootViewContent.addView(item);
+
+			}
+
 			return rootView;
 		}
 	}
