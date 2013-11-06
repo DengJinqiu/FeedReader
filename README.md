@@ -7,6 +7,8 @@ If the network is connected, downloading and parsering the XML in a separate thr
 
 There are two kinds of activites to display the result. Both of them are swipe-scrollview and can also be scrolled vertically. Dates are sent in the serialized form.
 
+I tested it on "Samsung Galaxy Tab 3" and an "HTC phone", the minimum SDK version is 11.
+
 There are several things need to be improved if I have more time:
 - Able to refresh the pages and update the articles automatically.
 - Use parcelable objects instead of serializable objects to pass data, the serializable objects are slower.
