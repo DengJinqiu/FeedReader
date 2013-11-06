@@ -117,6 +117,9 @@ public class ArticleActivity extends FragmentActivity {
 
 			TextView title = (TextView) rootView.findViewById(R.id.title);
 			title.setText(article.getTitle());
+			
+			TextView content = (TextView) rootView.findViewById(R.id.content);
+			content.setText(article.getContent());
 			return rootView;
 		}
 	}
