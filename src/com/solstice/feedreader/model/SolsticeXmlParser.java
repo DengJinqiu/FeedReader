@@ -1,17 +1,3 @@
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
-
 package com.solstice.feedreader.model;
 
 import java.io.IOException;
@@ -22,17 +8,29 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Xml;
 
+/** Parser the string get from the give url and initiate feedManager */
 /**
- * This class parses XML feeds from stackoverflow.com. Given an InputStream
- * representation of a feed, it returns a List of entries, where each list
- * element represents a single entry (post) in the XML feed.
+ * @author jinqiu
+ * 
  */
 public class SolsticeXmlParser {
-	// Do not use namespaces
+	/** Do not use namespaces. */
 	private static final String ns = null;
 
+	/** Used to save authors, categories and articles. */
 	private FeedManager feedManager = new FeedManager();
 
+	/**
+	 * Parse the input string.
+	 * 
+	 * @param in
+	 *            The input string.
+	 * @return FeedManager used to save authors, articles and categories.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	public FeedManager parse(InputStream in) throws XmlPullParserException,
 			IOException {
 		try {
@@ -47,6 +45,16 @@ public class SolsticeXmlParser {
 		}
 	}
 
+	/**
+	 * Parser for the whole string.
+	 * 
+	 * @param parser
+	 *            Parser.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private void readFeed(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		parser.require(XmlPullParser.START_TAG, ns, "feed");
@@ -66,6 +74,16 @@ public class SolsticeXmlParser {
 		}
 	}
 
+	/**
+	 * Parser for categories.
+	 * 
+	 * @param parser
+	 *            The parser.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private void readCategory(XmlPullParser parser)
 			throws XmlPullParserException, IOException {
 		parser.require(XmlPullParser.START_TAG, ns, "category");
@@ -78,6 +96,16 @@ public class SolsticeXmlParser {
 		}
 	}
 
+	/**
+	 * Parser for entries.
+	 * 
+	 * @param parser
+	 *            The parser.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private void readEntry(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		parser.require(XmlPullParser.START_TAG, ns, "entry");
@@ -111,6 +139,16 @@ public class SolsticeXmlParser {
 		feedManager.addArticle(article);
 	}
 
+	/**
+	 * Parser for authors.
+	 * 
+	 * @param parser
+	 *            The parser.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private String readAuthor(XmlPullParser parser)
 			throws XmlPullParserException, IOException {
 		String authorName = null;
@@ -131,7 +169,16 @@ public class SolsticeXmlParser {
 		return authorName;
 	}
 
-	// For the tags title and summary, extracts their text values.
+	/**
+	 * For the tags title and summary, extracts their text values.
+	 * 
+	 * @param parser
+	 *            The parser.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private String readText(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
 		String result = "";
@@ -142,12 +189,17 @@ public class SolsticeXmlParser {
 		return result;
 	}
 
-	// Skips tags the parser isn't interested in. Uses depth to handle nested
-	// tags. i.e.,
-	// if the next tag after a START_TAG isn't a matching END_TAG, it keeps
-	// going until it
-	// finds the matching END_TAG (as indicated by the value of "depth" being
-	// 0).
+	/**
+	 * Skips tags the parser isn't interested in. Uses depth to handle nested
+	 * tags.
+	 * 
+	 * @param parser
+	 *            The parser
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	private void skip(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		if (parser.getEventType() != XmlPullParser.START_TAG) {

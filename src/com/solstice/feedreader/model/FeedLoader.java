@@ -7,10 +7,21 @@ import java.net.URL;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+/** The loader to load the XML file. */
 public class FeedLoader {
 
+	/** The url to download the xml. */
 	private static final String URL = "http://blog.solstice-mobile.com/feeds/posts/default";
-	
+
+	/**
+	 * Load the xml from the url.
+	 * 
+	 * @return The FeedManager used to save articles, authors and categories.
+	 * @throws IOException
+	 *             The exception when network went wrong.
+	 * @throws XmlPullParserException
+	 *             The exception when parser xml.
+	 */
 	public FeedManager loadFeed() throws IOException, XmlPullParserException {
 		InputStream stream = null;
 		SolsticeXmlParser solsticeXmlParser = new SolsticeXmlParser();
@@ -25,8 +36,10 @@ public class FeedLoader {
 		}
 	}
 
-	// Given a string representation of a URL, sets up a connection and gets
-	// an input stream.
+	/**
+	 * Given a string representation of a URL, sets up a connection and gets an
+	 * input stream.
+	 */
 	private InputStream downloadUrl(String urlString) throws IOException {
 		URL url = new URL(urlString);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();

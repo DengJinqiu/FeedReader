@@ -19,8 +19,13 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.FeedLoader;
 import com.solstice.feedreader.model.FeedManager;
 
+/**
+ * Use to download XML and use broadcast to track whether there is a network
+ * change.
+ */
 public class MainActivity extends Activity {
 
+	/** Used to load XML. */
 	private FeedLoader feedLoader = new FeedLoader();
 
 	/** The BroadcastReceiver that tracks network connectivity changes. */
@@ -85,8 +90,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	// Implementation of AsyncTask used to download XML feed from
-	// stackoverflow.com.
+	/** Implementation of AsyncTask used to download XML. */
 	private class DownloadXmlTask extends AsyncTask<Void, Void, FeedManager> {
 
 		@Override

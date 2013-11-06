@@ -20,6 +20,7 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.Article;
 import com.solstice.feedreader.model.ArticleCollection;
 
+/** The page to show an article. */
 public class ArticleActivity extends FragmentActivity {
 
 	/** Provide fragments for each of the sections. */
@@ -28,6 +29,7 @@ public class ArticleActivity extends FragmentActivity {
 	/** Host the section contents. */
 	private ViewPager viewPager;
 
+	/** The collection for articles. */
 	private ArticleCollection articleCollection;
 
 	@Override
@@ -65,8 +67,6 @@ public class ArticleActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment = new VerticalScrollFragment();
 			Bundle args = new Bundle();
 			args.putSerializable(Article.ARTICLE,
@@ -90,17 +90,10 @@ public class ArticleActivity extends FragmentActivity {
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
+	/** representing a section of the app, but that simply. */
 	public static class VerticalScrollFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
 
+		/** The article. */
 		private Article article;
 
 		@Override

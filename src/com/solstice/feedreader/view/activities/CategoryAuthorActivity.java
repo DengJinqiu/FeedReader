@@ -22,6 +22,7 @@ import com.solstice.feedreader.R;
 import com.solstice.feedreader.model.ArticleCollection;
 import com.solstice.feedreader.model.FeedManager;
 
+/** The view for categories and authors. */
 public class CategoryAuthorActivity extends FragmentActivity {
 
 	/** Provide fragments for each of the sections. */
@@ -30,21 +31,21 @@ public class CategoryAuthorActivity extends FragmentActivity {
 	/** Host the section contents. */
 	private ViewPager viewPager;
 
+	/** Used to save categories and authors. */
 	private FeedManager feedManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.swipe_scroll_page);
-		
+
 		Bundle args = this.getIntent().getExtras();
 		if (args != null) {
 			feedManager = (FeedManager) args
 					.getSerializable(FeedManager.FEED_MANAGER);
 		}
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
+		// Create the adapter that will return a fragment.
 		sectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -52,29 +53,24 @@ public class CategoryAuthorActivity extends FragmentActivity {
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(sectionsPagerAdapter);
 
-
 	}
 
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
+	/** Returns a fragment. */
 	private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
-		
+
 		@Override
-		public void setPrimaryItem (ViewGroup container, int position, Object object) {
-			
+		public void setPrimaryItem(ViewGroup container, int position,
+				Object object) {
+
 		}
-		
+
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment = new VerticalScrollFragment();
 			Bundle args = new Bundle();
 			if (position == 0) {
@@ -107,10 +103,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
+	/** Representing a section of the app. */
 	public static class VerticalScrollFragment extends Fragment {
 
 		private Map<String, ArticleCollection> articleCollections;
@@ -143,12 +136,11 @@ public class CategoryAuthorActivity extends FragmentActivity {
 						Bundle args = new Bundle();
 						args.putSerializable(ArticleCollection.COLLECTION,
 								((ArticleCollectionButton) view)
-												.getArticleCollection());
+										.getArticleCollection());
 						intent.putExtras(args);
 						intent.setClass(
 								(CategoryAuthorActivity) VerticalScrollFragment.this
-										.getActivity(),
-								ArticleActivity.class);
+										.getActivity(), ArticleActivity.class);
 						startActivity(intent);
 					}
 				});
@@ -158,6 +150,7 @@ public class CategoryAuthorActivity extends FragmentActivity {
 			return rootView;
 		}
 
+		/** Use button to represent each line in this page. */
 		private class ArticleCollectionButton extends Button {
 
 			private ArticleCollection articleCollection;
