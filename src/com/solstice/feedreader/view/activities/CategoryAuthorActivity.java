@@ -128,14 +128,14 @@ public class CategoryAuthorActivity extends FragmentActivity {
 
 			ScrollView rootView = (ScrollView) inflater.inflate(
 					R.layout.scroll_fragment, container, false);
-			
-			LinearLayout rootViewContent = (LinearLayout) rootView.findViewById(R.id.fragment_content);
+
+			LinearLayout rootViewContent = (LinearLayout) rootView
+					.findViewById(R.id.fragment_content);
 
 			for (String name : articleCollections.keySet()) {
 				Button item = new Button(getActivity(), null, R.id.item);
 				item.setText(name);
 				rootViewContent.addView(item);
-
 			}
 
 			return rootView;
