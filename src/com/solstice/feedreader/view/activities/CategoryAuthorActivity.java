@@ -165,7 +165,12 @@ public class CategoryAuthorActivity extends FragmentActivity {
 			public ArticleCollectionButton(ArticleCollection articleCollection) {
 				super(VerticalScrollFragment.this.getActivity());
 				this.articleCollection = articleCollection;
-				setText(articleCollection.getName());
+				String name = "";
+				name = articleCollection.getName();
+				if (articleCollection.articleNumber() == 0) {
+					name += " (NO ARTICLE)";
+				}
+				setText(name);
 			}
 
 			public ArticleCollection getArticleCollection() {

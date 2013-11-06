@@ -7,9 +7,9 @@ import java.util.Set;
 public class Article implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String ARTICLE = "article";
-	
+
 	private String title;
 	private String content;
 
@@ -46,5 +46,17 @@ public class Article implements Serializable {
 
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+
+	public String getCategoryNamesString() {
+		String result = "";
+		for (String string : categoryNames) {
+			result += string;
+			result += ", ";
+		}
+		if (result.length() > 2) {
+			result = result.substring(0, result.length() - 2);
+		}
+		return result;
 	}
 }

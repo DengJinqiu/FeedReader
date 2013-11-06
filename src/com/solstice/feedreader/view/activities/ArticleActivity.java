@@ -9,11 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -73,7 +72,7 @@ public class ArticleActivity extends FragmentActivity {
 			args.putSerializable(Article.ARTICLE,
 					(Serializable) articleCollection.getArticle(position));
 			fragment.setArguments(args);
-			Log.d("getItem", Integer.toString(position));
+			// Log.d("getItem", Integer.toString(position));
 			return fragment;
 		}
 
@@ -85,7 +84,7 @@ public class ArticleActivity extends FragmentActivity {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale local = Locale.getDefault();
-			Log.d("getPageTitle", Integer.toString(position));
+			// Log.d("getPageTitle", Integer.toString(position));
 			return articleCollection.getArticle(position).getTitle()
 					.toUpperCase(local);
 		}
@@ -118,9 +117,15 @@ public class ArticleActivity extends FragmentActivity {
 
 			TextView title = (TextView) rootView.findViewById(R.id.title);
 			title.setText(article.getTitle());
-			
-			TextView content = (TextView) rootView.findViewById(R.id.content);
-			content.setText(Html.fromHtml(article.getContent()));
+
+			TextView author = (TextView) rootView.findViewById(R.id.author);
+			author.setText("Author: " + article.getAuthorName());
+
+			TextView category = (TextView) rootView.findViewById(R.id.category);
+			category.setText("Category: " + article.getCategoryNamesString());
+
+			WebView content = (WebView) rootView.findViewById(R.id.content);
+			content.loadData(article.getContent(), "text/html", "utf-8");
 			return rootView;
 		}
 	}
