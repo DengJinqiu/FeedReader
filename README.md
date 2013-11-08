@@ -11,6 +11,7 @@ I tested it on "Samsung Galaxy Tab 3" and an "HTC phone", the minimum SDK versio
 
 There are several things need to be improved if I have more time:
 - Able to refresh the pages and update the articles automatically.
+- Handle the exceptions.
 - Use parcelable objects instead of serializable objects to pass data, the serializable objects are slower.
 - Change MainActivity into a welcome page. Currently, it is almost a blank page. Only used to download, parser and display network problem.
 - Improve the article display.
